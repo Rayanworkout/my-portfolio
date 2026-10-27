@@ -1,0 +1,17 @@
+{
+  "name": "rayan-world",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.23.4" },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test": "npm run build && node --test scripts/verify.test.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/dm-sans": "^5.3.0",
+    "@fontsource-variable/ibm-plex-sans": "^5.3.0",
+    "astro": "^7.4.2"
+  }
+}

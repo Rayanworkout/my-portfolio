@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connecter un ERP à ses autres outils : par où commencer ? | Flowshift</title>
+  <meta name="description" content="Comment préparer une intégration ERP : données à échanger, API ou fichiers, sens des flux, contrôles et suivi des erreurs.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Flowshift">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Connecter un ERP à ses autres outils : par où commencer ?">
+  <meta property="og:description" content="Les décisions à prendre avant de développer un échange de données avec un ERP.">
+  <meta property="og:url" content="https://flowshift.rayan.world/blog/connecter-erp-outils.html">
+  <link rel="canonical" href="https://flowshift.rayan.world/blog/connecter-erp-outils.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/tailwind.css">
+  <link rel="stylesheet" href="../assets/site.css">
+  <link rel="stylesheet" href="../assets/ligne-claire.css">
+</head>
+
+<body class="ligne-claire bg-canvas font-sans text-ink antialiased">
+  <a href="#contenu" class="skip-link">Aller au contenu</a>
+  <header class="border-b border-line bg-canvas">
+    <div class="mx-auto flex max-w-7xl flex-col items-start gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between lg:px-8">
+      <a href="../index.html" class="site-logo text-sm font-semibold tracking-[0.18em] uppercase">Flowshift</a>
+      <nav aria-label="Navigation principale" class="site-nav flex flex-wrap items-center gap-x-5 gap-y-3 text-sm font-medium text-muted sm:justify-end lg:gap-8">
+        <a href="../index.html" class="transition hover:text-ink">Accueil</a>
+        <a href="../services.html" class="transition hover:text-ink">Services</a>
+        <a href="../blog.html" class="transition hover:text-ink">Blog</a>
+        <a href="../contact.html" class="rounded-md border border-line px-4 py-2 text-ink transition hover:border-accent hover:text-accent">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <header class="flow-page-intro">
+      <p class="section-label">Intégration de données</p>
+      <h1>Connecter un ERP à ses autres outils : par où commencer ?</h1>
+      <p class="flow-detail-type mt-4">Par Flowshift</p>
+      <p>Un échange fiable se prépare avant la première ligne de code. Il faut savoir quelles données circulent, qui les modifie et comment repérer un échec.</p>
+    </header>
+
+    <article class="flow-article">
+      <p>Un ERP partage rarement toutes ses données avec tous les logiciels. Une application commerciale peut lui envoyer des commandes ; un outil de suivi peut recevoir leur statut ; la comptabilité peut récupérer des écritures. Le premier travail consiste à décrire chaque échange attendu, dans son sens et à son rythme.</p>
+
+      <h2>Définir la source de référence pour chaque donnée</h2>
+      <p>Pour une fiche client, quel outil fait foi pour l’adresse, le numéro de TVA ou les conditions de paiement ? Si deux systèmes peuvent modifier le même champ, une synchronisation dans les deux sens risque d’écraser une correction récente. Une règle simple, écrite champ par champ, évite cette ambiguïté.</p>
+      <p>Il faut aussi décider comment rapprocher les enregistrements. L’identifiant interne d’un logiciel n’est pas forcément connu de l’autre. Une table de correspondance ou un identifiant métier stable permet de mettre à jour la bonne fiche au lieu d’en créer une nouvelle à chaque passage.</p>
+
+      <h2>Choisir le mode d’échange selon les outils</h2>
+      <p>Une API convient lorsque les systèmes doivent communiquer régulièrement et que leurs interfaces le permettent. Un import de fichiers peut être suffisant pour un traitement quotidien ou pour un logiciel qui ne propose pas d’API. Le choix dépend des possibilités réelles des outils, du volume, du délai acceptable et de la façon dont les erreurs seront traitées.</p>
+      <p>Avant de développer, demandez pour chaque flux :</p>
+      <ul>
+        <li>Qu’est-ce qui déclenche l’envoi : une action, un horaire ou une demande de l’autre système ?</li>
+        <li>Quelles données sont obligatoires et quelles transformations faut-il appliquer ?</li>
+        <li>Que se passe-t-il si le destinataire est indisponible ou refuse un enregistrement ?</li>
+      </ul>
+
+      <h2>Prévoir les contrôles et les reprises</h2>
+      <p>Un appel réussi ne garantit pas que toutes les données attendues sont arrivées. Le suivi doit rendre visibles les volumes traités, les enregistrements rejetés et la dernière synchronisation réussie. Pour les traitements planifiés, conserver un état d’avancement aide à reprendre après une interruption sans créer de doublons.</p>
+      <p>Testez aussi les cas ordinaires qui posent problème : une commande modifiée après son premier envoi, un client déjà présent, une donnée obligatoire absente ou un import relancé. Une fois le flux en service, une personne doit savoir où lire les erreurs et comment relancer les éléments corrigés.</p>
+
+      <h2>Commencer par un flux utile et vérifiable</h2>
+      <p>Un premier périmètre limité permet de valider les règles métier et la qualité des données avant de multiplier les connexions. Décrivez le résultat attendu avec des exemples d’enregistrements réels, anonymisés si nécessaire. Vous disposerez alors d’une base claire pour chiffrer et construire l’intégration.</p>
+      <div class="flow-article-end">
+        <p>Vous préparez un échange avec un ERP ? Découvrez mes <a href="../services.html">services de connexion entre outils</a> ou <a href="../contact.html">décrivez votre besoin</a>.</p>
+        <a href="../blog.html" class="flow-text-link">Tous les articles <span aria-hidden="true">↗</span></a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="border-t border-line bg-surface">
+    <div class="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 text-sm text-muted lg:flex-row lg:items-center lg:justify-between lg:px-8">
+      <p>Flowshift</p>
+      <nav aria-label="Navigation secondaire" class="site-footer-links flex flex-wrap gap-4">
+        <a href="../index.html" class="transition hover:text-ink">Accueil</a>
+        <a href="../services.html" class="transition hover:text-ink">Services</a>
+        <a href="../blog.html" class="transition hover:text-ink">Blog</a>
+        <a href="../contact.html" class="transition hover:text-ink">Contact</a>
+        <a href="../mentions-legales.html" class="transition hover:text-ink">Mentions légales</a>
+        <a href="../politique-confidentialite.html" class="transition hover:text-ink">Confidentialité</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+
+</html>

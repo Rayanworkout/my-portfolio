@@ -1,0 +1,8 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { posts, categories, slug, label } from '../../../lib/content.js';
+const allCategories = categories(await posts());
+---
+<Base title="Catégories du blog" description="Parcourir les notes techniques de Rayan par sujet.">
+  <section class="shell subpage-intro"><a class="back-link" href="/blog/">Tous les articles</a><p class="section-kicker">Blog personnel</p><h1>Par sujet.</h1><p>Choisissez un thème pour retrouver les notes associées.</p><nav class="category-grid" aria-label="Toutes les catégories">{allCategories.map(([tag, count]) => <a href={`/blog/categories/${slug(tag)}/`}>{label(tag)} <span>{count}</span></a>)}</nav></section>
+</Base>

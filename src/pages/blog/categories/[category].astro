@@ -1,0 +1,12 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { posts, categories, slug, label, postUrl, dateLabel, excerpt } from '../../../lib/content.js';
+export async function getStaticPaths() {
+  const allPosts = await posts();
+  return categories(allPosts).map(([tag]) => ({ params: { category: slug(tag) }, props: { tag, matching: allPosts.filter((post) => (post.data.tags.length ? post.data.tags : ['Sans catégorie']).includes(tag)) } }));
+}
+const { tag, matching } = Astro.props;
+---
+<Base title={`Articles : ${label(tag)}`} description={`Toutes les notes techniques de Rayan sur ${label(tag)}.`}>
+  <section class="shell subpage-intro category-detail"><a class="back-link" href="/blog/categories/">Toutes les catégories</a><p class="section-kicker">Catégorie</p><h1>{label(tag)}</h1><p>{matching.length} {matching.length === 1 ? 'article' : 'articles'} dans cette catégorie.</p><div class="post-list">{matching.map((post) => <article class="post-row"><time datetime={post.id.slice(0, 10)}>{dateLabel(post)}</time><div><h2 lang={post.data.lang}><a href={postUrl(post)}>{post.data.title}</a></h2><p lang={post.data.lang}>{excerpt(post)}</p></div><a class="row-link" href={postUrl(post)} aria-label={`Lire : ${post.data.title}`}>Lire <span aria-hidden="true">↗</span></a></article>)}</div></section>
+</Base>

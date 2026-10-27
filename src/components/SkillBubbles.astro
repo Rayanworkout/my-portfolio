@@ -1,0 +1,22 @@
+---
+const { skills } = Astro.props;
+---
+<div class="skill-playground">
+  <ul class="skill-bubbles">
+    {skills.map((skill, index) => <li style={`--float-delay: -${index * 0.8}s`}>
+      <button class="skill-bubble" type="button" aria-label={`${skill.name} : ${skill.description.join(' ')}`} data-skill-bubble>
+        <span class="skill-bubble-face">{skill.name}</span>
+        <span class="skill-tooltip" aria-hidden="true">{skill.description.join(' ')}</span>
+      </button>
+    </li>)}
+  </ul>
+</div>
+
+<script>
+  for (const bubble of document.querySelectorAll('[data-skill-bubble]')) {
+    bubble.addEventListener('click', () => bubble.toggleAttribute('data-open'));
+  }
+  document.addEventListener('pointerdown', (event) => {
+    if (!event.target.closest('[data-skill-bubble]')) document.querySelectorAll('[data-skill-bubble][data-open]').forEach((bubble) => bubble.removeAttribute('data-open'));
+  });
+</script>

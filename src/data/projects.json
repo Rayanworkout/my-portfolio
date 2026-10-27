@@ -1,0 +1,97 @@
+[
+  {
+    "name": "Find & Replace",
+    "description": "Outil en ligne de commande écrit en Rust pour rechercher et remplacer plusieurs motifs dans des fichiers.",
+    "image": "thunder",
+    "keywords": [
+      "rust",
+      "cli",
+      "tools"
+    ],
+    "link": "",
+    "githubLink": "https://github.com/Rayanworkout/Find-and-Replace",
+    "kind": "Personnel"
+  },
+  {
+    "name": "Python Runner",
+    "description": "Exécute automatiquement des scripts avec suivi précis, journaux et notifications par courriel.",
+    "image": "pipeline",
+    "keywords": [
+      "python",
+      "logging",
+      "monitoring",
+      "tools"
+    ],
+    "link": "",
+    "githubLink": "https://github.com/Rayanworkout/python_runner",
+    "kind": "Personnel"
+  },
+  {
+    "name": "Indexium",
+    "description": "Moteur de recherche basé sur Apache Lucene, exposé par une API REST simple.",
+    "image": "rocket",
+    "keywords": [
+      "java",
+      "search engine",
+      "tools"
+    ],
+    "link": "",
+    "githubLink": "https://github.com/Rayanworkout/Indexium",
+    "kind": "Personnel"
+  },
+  {
+    "name": "Mini Web Server",
+    "description": "Mini serveur web développé en Python à partir de zéro. Il gère les requêtes GET, les fichiers statiques et le contenu dynamique.",
+    "image": "globe",
+    "keywords": [
+      "python",
+      "socket",
+      "http"
+    ],
+    "link": "",
+    "githubLink": "https://github.com/Rayanworkout/MinimalistWebServer",
+    "kind": "Personnel"
+  },
+  {
+    "name": "Predicting Drug Consumption",
+    "description": "Application Django Ninja et React présentant une analyse statistique interactive sur la consommation de drogues et la personnalité.",
+    "image": "drug",
+    "keywords": [
+      "python",
+      "pandas",
+      "API REST",
+      "django",
+      "react"
+    ],
+    "link": "",
+    "githubLink": "https://github.com/Rayanworkout/Predicting-Drug-Consumption",
+    "kind": "Personnel"
+  },
+  {
+    "name": "Email Spam Detector",
+    "description": "Petit projet de classification des courriels indésirables avec l’algorithme random forest.",
+    "image": "ladybug",
+    "keywords": [
+      "python",
+      "machine learning",
+      "scikit-learn"
+    ],
+    "link": "",
+    "githubLink": "https://github.com/Rayanworkout/Email-Spam-Detector",
+    "kind": "Personnel"
+  },
+  {
+    "name": "Simple Continuous Integration",
+    "description": "Système d’intégration continue en Python qui lance les tests après chaque push, avec une interface de suivi des journaux.",
+    "image": "pipeline",
+    "keywords": [
+      "python",
+      "flask",
+      "automation",
+      "bash"
+    ],
+    "link": "",
+    "githubLink": "https://github.com/Rayanworkout/Simple-CI",
+    "kind": "Personnel"
+  }
+]

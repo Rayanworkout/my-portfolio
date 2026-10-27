@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectCarousel from '../components/ProjectCarousel.astro';
+import SkillBubbles from '../components/SkillBubbles.astro';
+import projects from '../data/projects.json';
+import skills from '../data/skills.json';
+---
+<Base title="Développeur indépendant" description="Rayan conçoit des applications métier, des traitements de données et leur mise en production. Portfolio et blog technique.">
+  <section class="hero">
+    <div class="shell hero-inner">
+      <p class="eyebrow">Rayan · Développeur indépendant</p>
+      <h1>Applications,<br /><em>données,</em><br />déploiement.</h1>
+      <div class="hero-base">
+        <p>Je conçois des applications métier, des API et des traitements de données, jusqu’à leur mise en production.</p>
+        <div class="hero-actions"><a class="button" href="#projets">Voir mes projets <span aria-hidden="true">↗</span></a><a class="text-link" href="https://flowshift.rayan.world/" target="_blank">Découvrir Flowshift</a></div>
+      </div>
+      <div class="hero-trace" aria-hidden="true"><span>Concevoir</span><span>Construire</span><span>Déployer</span></div>
+    </div>
+  </section>
+
+  <section class="section shell practice-section" id="apropos" aria-labelledby="practice-title">
+    <div class="section-heading"><p class="section-kicker">Ce que je fais</p><h2 id="practice-title">Du besoin à la production.</h2></div>
+    <div class="practice-grid">
+      <article><span class="practice-number">01 / APPLICATIONS</span><div class="practice-glyph" aria-hidden="true">{'{}'}</div><h3>Applications métier</h3><p>Outils internes, API REST et interfaces pensées pour les équipes qui les utilisent.</p><span class="practice-stack">Django · JavaScript</span></article>
+      <article><span class="practice-number">02 / DONNÉES</span><div class="practice-glyph" aria-hidden="true">↗</div><h3>Données</h3><p>Traitements automatisés, synchronisations et tableaux de bord utiles au quotidien.</p><span class="practice-stack">Python · PostgreSQL</span></article>
+      <article><span class="practice-number">03 / PRODUCTION</span><div class="practice-glyph" aria-hidden="true">◎</div><h3>Déploiement</h3><p>Mise en ligne, automatisation et suivi pour faire vivre les applications.</p><span class="practice-stack">Linux · Docker · CI/CD</span></article>
+    </div>
+    <div class="flowshift-note"><p>Je mène mes missions via ma société <strong>Flowshift</strong>.</p><a class="text-link" href="https://flowshift.rayan.world/" target="_blank" rel="noopener noreferrer">Découvrir Flowshift <span aria-hidden="true">↗</span></a></div>
+  </section>
+
+  <section class="section projects-section" id="projets" aria-labelledby="projects-title"><div class="shell">
+    <div class="section-heading"><p class="section-kicker">Réalisations</p><h2 id="projects-title">Projets.</h2></div>
+    <ProjectCarousel projects={projects} />
+  </div></section>
+
+  <section class="section skills-section" id="competences" aria-labelledby="skills-title"><div class="shell">
+    <div class="section-heading"><p class="section-kicker">En pratique</p><h2 id="skills-title">Compétences.</h2></div>
+    <SkillBubbles skills={skills} />
+  </div></section>
+
+  <section class="section writing-section" aria-labelledby="writing-title"><div class="shell writing-grid">
+    <div class="section-heading"><p class="section-kicker">Sur le blog</p><h2 id="writing-title">Notes de terrain.</h2><a class="button button-light" href="/blog/">Lire les articles <span aria-hidden="true">↗</span></a></div>
+    <div class="topic-cloud" aria-label="Sujets du blog"><span>Linux</span><span>Réseau</span><span>Sécurité</span><span>Docker</span><span>Développement</span><span>Automatisation</span></div>
+  </div></section>
+
+  <section class="contact-section" aria-labelledby="contact-title"><div class="shell contact-inner"><div><p class="section-kicker">Contact</p><h2 id="contact-title">On en parle ?</h2></div><a class="button" href="mailto:contact@rayan.world">contact@rayan.world <span aria-hidden="true">↗</span></a></div></section>
+</Base>

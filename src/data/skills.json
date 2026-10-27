@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Python",
+    "description": [
+      "Développement d’applications et d’API.",
+      "Utilisation de Django, Flask et FastAPI.",
+      "Collecte, nettoyage et analyse de données avec Pandas et NumPy."
+    ]
+  },
+  {
+    "name": "Django",
+    "description": [
+      "Applications métier, API REST et intranets."
+    ]
+  },
+  {
+    "name": "PostgreSQL",
+    "description": [
+      "Stockage des données utilisées par les applications et les traitements."
+    ]
+  },
+  {
+    "name": "Docker",
+    "description": [
+      "Conteneurisation des applications pour rendre les environnements cohérents.",
+      "Utilisation de Docker Compose pour les applications à plusieurs conteneurs."
+    ]
+  },
+  {
+    "name": "Linux",
+    "description": [
+      "Utilisation des outils en ligne de commande et des scripts.",
+      "Gestion, configuration et sécurisation de serveurs Linux pour le déploiement."
+    ]
+  },
+  {
+    "name": "JavaScript",
+    "description": [
+      "Interfaces et interactions pour les applications web."
+    ]
+  },
+  {
+    "name": "CI / CD",
+    "description": [
+      "Création de pipelines avec GitHub Actions, Ansible et Bash.",
+      "Déploiement d’applications sur AWS ou Google Cloud."
+    ]
+  },
+  {
+    "name": "Testing",
+    "description": [
+      "Écriture de tests unitaires, d’intégration et fonctionnels.",
+      "Utilisation de pytest et unittest."
+    ]
+  }
+]

@@ -1,0 +1,5 @@
+.codex
+ideas.txt
+node_modules/
+.agents/
+.aws/

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" role="img" aria-labelledby="title desc">
+  <title id="title">Logo placeholder GetConsult</title>
+  <desc id="desc">Placeholder local pour le logo GetConsult.</desc>
+  <rect width="320" height="160" rx="18" fill="#dbe8eb"/>
+  <circle cx="86" cy="80" r="34" fill="#0f4c5c"/>
+  <text x="86" y="91" text-anchor="middle" font-family="Manrope, Arial, sans-serif" font-size="28" font-weight="700" fill="#fff">GC</text>
+  <text x="140" y="88" font-family="Manrope, Arial, sans-serif" font-size="26" font-weight="700" fill="#0f4c5c">GetConsult</text>
+</svg>

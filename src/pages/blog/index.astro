@@ -1,0 +1,14 @@
+---
+import Base from '../../layouts/Base.astro';
+import { posts, categories, slug, label, postUrl, dateLabel, excerpt } from '../../lib/content.js';
+import publications from '../../data/publications.json';
+const allPosts = await posts();
+const topCategories = categories(allPosts).slice(0, 8);
+---
+<Base title="Blog technique" description="Notes personnelles de Rayan sur Linux, le réseau, la sécurité, l’automatisation et le développement.">
+  <section class="blog-intro shell"><p class="section-kicker">Blog personnel</p><h1>Notes de terrain.</h1><p>Configurations, essais et solutions autour des systèmes, du réseau et du développement.</p></section>
+  <div class="shell blog-grid"><aside class="topic-panel"><h2>Explorer par sujet</h2><nav aria-label="Catégories populaires">{topCategories.map(([tag, count]) => <a href={`/blog/categories/${slug(tag)}/`}>{label(tag)} <span>{count}</span></a>)}</nav><a class="all-topics" href="/blog/categories/">Toutes les catégories <span aria-hidden="true">↗</span></a></aside>
+    <section class="post-list" aria-labelledby="all-posts-title"><div class="list-heading"><h2 id="all-posts-title">Tous les articles</h2><span>{allPosts.length} notes</span></div>{allPosts.map((post) => <article class="post-row"><time datetime={post.id.slice(0, 10)}>{dateLabel(post)}</time><div><h3 lang={post.data.lang}><a href={postUrl(post)}>{post.data.title}</a></h3><p lang={post.data.lang}>{excerpt(post)}</p></div><a class="row-link" href={postUrl(post)} aria-label={`Lire : ${post.data.title}`}>Lire <span aria-hidden="true">↗</span></a></article>)}</section>
+  </div>
+  <section class="section shell medium-section" aria-labelledby="medium-title"><div class="section-heading"><p class="section-kicker">Archives</p><h2 id="medium-title">Aussi sur Medium.</h2></div><div class="medium-links">{publications.map((article) => <a href={article.link} target="_blank" rel="noopener noreferrer">{article.title} <span aria-hidden="true">↗</span></a>)}</div></section>
+</Base>
