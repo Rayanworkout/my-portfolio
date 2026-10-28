@@ -28,7 +28,7 @@
   },
   {
     "name": "Indexium",
-    "description": "Moteur de recherche basé sur Apache Lucene, exposé par une API REST simple.",
+    "description": "Moteur de recherche / indexeur ultra rapide basé sur Apache Lucene, exposé par une API REST.",
     "image": "rocket",
     "keywords": [
       "java",
