@@ -8,6 +8,10 @@
     ]
   },
   {
+    "name": "Rust",
+    "description": ["Développement de l’outil en ligne de commande Find & Replace."]
+  },
+  {
     "name": "Django",
     "description": [
       "Applications métier, API REST et intranets."

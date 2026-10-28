@@ -25,9 +25,15 @@ test('all migrated content is built on the one domain', () => {
   const home = readFileSync(join(dist, 'index.html'), 'utf8');
   assert.equal(home.match(/class="project-card"/g)?.length, projects.length);
   assert.equal(home.match(/<button\b[^>]*data-skill-bubble\b/g)?.length, skills.length);
+  for (const project of projects) assert.ok(home.includes(`data-keywords="${project.keywords.map((keyword) => keyword.toLowerCase()).join('|')}"`));
+  for (const skill of skills) {
+    const hasProject = projects.some((project) => project.keywords.some((keyword) => keyword.toLowerCase() === skill.name.toLowerCase()));
+    assert.ok(home.includes(`data-skill="${skill.name.toLowerCase()}" data-has-project="${hasProject}"`));
+  }
   assert.ok(!existsSync(join(dist, 'projets/index.html')));
-  assert.match(home, /data-filter="django"/);
-  assert.match(home, /Société Flowshift/);
+  for (const skill of ['python', 'django', 'rust']) assert.match(home, new RegExp(`data-skill="${skill}" data-has-project="true"`));
+  assert.match(home, /data-keywords="rust\|cli\|tools"/);
+  assert.match(home, /Je mène mes missions via ma société/);
   assert.match(home, /Applications,/);
   assert.match(home, /mailto:contact@rayan.world/);
   assert.ok(!pages.some((file) => /Marseille|Enoé Énergies|Profil personnel|rayan13170@protonmail\.com/.test(readFileSync(file, 'utf8'))));

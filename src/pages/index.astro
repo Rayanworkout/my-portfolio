@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import ProjectCarousel from '../components/ProjectCarousel.astro';
+import ProjectGrid from '../components/ProjectGrid.astro';
 import SkillBubbles from '../components/SkillBubbles.astro';
 import projects from '../data/projects.json';
 import skills from '../data/skills.json';
@@ -12,7 +12,7 @@ import skills from '../data/skills.json';
       <h1>Applications,<br /><em>données,</em><br />déploiement.</h1>
       <div class="hero-base">
         <p>Je conçois des applications métier, des API et des traitements de données, jusqu’à leur mise en production.</p>
-        <div class="hero-actions"><a class="button" href="#projets">Voir mes projets <span aria-hidden="true">↗</span></a><a class="text-link" href="https://flowshift.rayan.world/" target="_blank">Découvrir Flowshift</a></div>
+        <div class="hero-actions"><a class="button" href="#projets">Voir mes projets <span aria-hidden="true">↗</span></a><a class="text-link" href="https://flowshift.rayan.world/" target="_blank" rel="noopener noreferrer">Découvrir Flowshift</a></div>
       </div>
       <div class="hero-trace" aria-hidden="true"><span>Concevoir</span><span>Construire</span><span>Déployer</span></div>
     </div>
@@ -29,13 +29,15 @@ import skills from '../data/skills.json';
   </section>
 
   <section class="section projects-section" id="projets" aria-labelledby="projects-title"><div class="shell">
-    <div class="section-heading"><p class="section-kicker">Réalisations</p><h2 id="projects-title">Projets.</h2></div>
-    <ProjectCarousel projects={projects} />
+    <div class="section-heading"><p class="section-kicker">Réalisations</p><h2 id="projects-title">Projets.</h2><p>Des outils concrets, du code à consulter et des choix techniques à explorer.</p></div>
+    <p class="project-selection" id="project-selection" aria-live="polite" hidden><span></span> <button type="button" id="clear-project-selection">Tout voir</button></p>
+    <ProjectGrid projects={projects} />
   </div></section>
 
   <section class="section skills-section" id="competences" aria-labelledby="skills-title"><div class="shell">
     <div class="section-heading"><p class="section-kicker">En pratique</p><h2 id="skills-title">Compétences.</h2></div>
-    <SkillBubbles skills={skills} />
+    <p class="skills-intro">Sélectionnez une technologie présente dans les projets pour voir où je l’utilise.</p>
+    <SkillBubbles skills={skills} projects={projects} />
   </div></section>
 
   <section class="section writing-section" aria-labelledby="writing-title"><div class="shell writing-grid">

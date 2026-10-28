@@ -1,0 +1,13 @@
+---
+import ProjectCard from './ProjectCard.astro';
+
+const { projects } = Astro.props;
+---
+
+<div class="projects-grid">
+  {projects.map((project) => (
+    <div class="project-item" data-keywords={project.keywords.map((keyword) => keyword.toLowerCase()).join('|')}>
+      <ProjectCard project={project} />
+    </div>
+  ))}
+</div>

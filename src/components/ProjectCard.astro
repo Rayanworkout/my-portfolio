@@ -2,211 +2,29 @@
 import { Image } from 'astro:assets';
 
 const { project } = Astro.props;
-
-const images = import.meta.glob('../assets/projects/*.jpg', {
-  eager: true,
-  import: 'default',
-});
+const images = import.meta.glob('../assets/projects/*.jpg', { eager: true, import: 'default' });
 ---
 
 <article class="project-card">
-  {
-    project.image ? (
-      <div class="project-card-image">
-        <Image
-          src={images[`../assets/projects/${project.image}.jpg`]}
-          width={680}
-          format="webp"
-          alt=""
-          loading="lazy"
-        />
-      </div>
-    ) : (
-      <div class="project-card-visual" aria-hidden="true">
-        {project.visual.map((part) => <span>{part}</span>)}
-      </div>
-    )
-  }
-
+  {project.image ? (
+    <div class="project-card-image">
+      <Image src={images[`../assets/projects/${project.image}.jpg`]} width={680} format="webp" alt="" loading="lazy" />
+    </div>
+  ) : (
+    <div class="project-card-visual" aria-hidden="true">
+      {project.visual.map((part) => <span>{part}</span>)}
+    </div>
+  )}
   <div class="project-card-body">
-    <span class="project-kind">
-      {project.kind === 'Client' ? 'Mission client' : 'Projet perso'}
-    </span>
-
+    <span class="project-kind">{project.kind === 'Client' ? 'Mission client' : 'Projet perso'}</span>
     <h3>{project.name}</h3>
-
     <p>{project.description}</p>
-
     <ul class="tag-list" aria-label={`Technologies pour ${project.name}`}>
-      {project.keywords.slice(0, 3).map((keyword) => (
-        <li>{keyword}</li>
-      ))}
+      {project.keywords.map((keyword) => <li>{keyword}</li>)}
     </ul>
-
-    {
-      (project.link || project.githubLink) && (
-        <div class="project-card-links">
-          {project.link && (
-            <a href={project.link}>
-              Voir le projet <span aria-hidden="true">↗</span>
-            </a>
-          )}
-
-          {project.githubLink && (
-            <a href={project.githubLink}>
-              Code source <span aria-hidden="true">↗</span>
-            </a>
-          )}
-        </div>
-      )
-    }
+    {(project.link || project.githubLink) && <div class="project-card-links">
+      {project.link && <a href={project.link}>Voir le projet <span aria-hidden="true">↗</span></a>}
+      {project.githubLink && <a href={project.githubLink}>Code source <span aria-hidden="true">↗</span></a>}
+    </div>}
   </div>
 </article>
-
-<style>
-  .project-card {
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    width: 100%;
-    height: 100%;
-    min-width: 0;
-    padding: 0.85rem 0.85rem 0.6rem;
-    gap: 0;
-    border-radius: 20px;
-    overflow: hidden;
-  }
-
-  /* Image : positionnement absolu pour remplir 100% du cadre sans overflow */
-  .project-card-image {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    flex-shrink: 0;
-    overflow: hidden;
-    border-radius: 12px;
-  }
-
-  .project-card-image :global(img) {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 12px;
-  }
-
-  /* Visuel de secours */
-  .project-card-visual {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    flex-shrink: 0;
-    overflow: hidden;
-    border-radius: 12px;
-  }
-
-  /* Contenu de la card */
-  .project-card-body {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    min-width: 0;
-    gap: 0.4rem;
-    padding-top: 0.65rem;
-  }
-
-  .project-kind {
-    margin: 0;
-    font-size: 0.75rem;
-    line-height: 1.3;
-  }
-
-  .project-card h3 {
-    margin: 0;
-    font-size: 1.05rem;
-    line-height: 1.3;
-  }
-
-  .project-card p {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    overflow: hidden;
-    margin: 0;
-    font-size: 0.85rem;
-    line-height: 1.4;
-  }
-
-  /* Technologies */
-  .tag-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.3rem;
-    margin: 0.2rem 0 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .tag-list li {
-    font-size: 0.72rem;
-    line-height: 1.3;
-  }
-
-  /* Liens en bas de la card */
-  .project-card-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem 0.7rem;
-    margin-top: auto;
-    padding-top: 0.6rem;
-    padding-bottom: 0;
-  }
-
-  .project-card-links a {
-    font-size: 0.8rem;
-  }
-
-  /* Tablettes et mobiles */
-  @media (max-width: 768px) {
-    .project-card {
-      padding: 0.75rem 0.75rem 0.5rem;
-      border-radius: 16px;
-    }
-
-    .project-card-image,
-    .project-card-visual {
-      aspect-ratio: 16 / 9;
-      border-radius: 10px;
-    }
-
-    .project-card-image :global(img) {
-      border-radius: 10px;
-    }
-
-    .project-card-body {
-      gap: 0.35rem;
-      padding-top: 0.5rem;
-    }
-
-    .project-kind {
-      font-size: 0.72rem;
-    }
-
-    .project-card h3 {
-      font-size: 0.95rem;
-    }
-
-    .project-card p {
-      font-size: 0.8rem;
-    }
-
-    .tag-list li {
-      font-size: 0.68rem;
-    }
-
-    .project-card-links a {
-      font-size: 0.75rem;
-    }
-  }
-</style>
