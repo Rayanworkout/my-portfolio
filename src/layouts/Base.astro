@@ -2,13 +2,13 @@
 import '../styles/global.css';
 import dmFont from '@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url';
 import plexFont from '@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2?url';
-const { title, description, type = 'website', noindex = false } = Astro.props;
+const { title, description, type = 'website', noindex = false, lang = 'fr' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const onBlog = Astro.url.pathname.startsWith('/blog/');
-const onHome = Astro.url.pathname === '/';
+const onProjects = Astro.url.pathname.startsWith('/projets/');
 ---
 <!doctype html>
-<html lang="fr">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -33,10 +33,11 @@ const onHome = Astro.url.pathname === '/';
       <div class="shell header-inner">
         <a class="brand" href="/" aria-label="Rayan, accueil" translate="no">Rayan<span>.</span></a>
         <nav aria-label="Navigation principale">
-          <a href="/" aria-current={onHome ? 'page' : undefined}>Portfolio</a>
+          <a href="/projets/" aria-current={onProjects ? 'page' : undefined}>Projets</a>
+          <a href="/#competences">Compétences</a>
           <a href="/blog/" aria-current={onBlog ? 'page' : undefined}>Blog</a>
-          <a href="https://flowshift.rayan.world/" target="_blank" rel="noopener noreferrer">Flowshift</a>
-          <a class="nav-contact" href="mailto:contact@rayan.world">Me contacter</a>
+          <a href="https://flowshift.fr/" target="_blank" rel="noopener noreferrer">Flowshift <span aria-hidden="true">↗</span></a>
+          <a class="nav-contact" href="mailto:contact@rayan.world">Contact</a>
         </nav>
       </div>
     </header>
@@ -45,8 +46,9 @@ const onHome = Astro.url.pathname === '/';
       <div class="shell footer-inner">
         <div><a class="brand" href="/" translate="no">Rayan<span>.</span></a><p>Développement backend, données et infrastructure.</p></div>
         <nav aria-label="Liens complémentaires">
+          <a href="/projets/">Projets</a>
           <a href="/blog/">Blog</a>
-          <a href="https://flowshift.rayan.world/" target="_blank" rel="noopener noreferrer">Flowshift</a>
+          <a href="https://flowshift.fr/" target="_blank" rel="noopener noreferrer">Flowshift</a>
           <a href="https://github.com/Rayanworkout">GitHub</a>
           <a href="mailto:contact@rayan.world">Courriel</a>
         </nav>

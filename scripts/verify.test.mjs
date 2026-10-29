@@ -23,18 +23,27 @@ test('all migrated content is built on the one domain', () => {
   const projects = JSON.parse(readFileSync(join(root, 'src/data/projects.json')));
   const skills = JSON.parse(readFileSync(join(root, 'src/data/skills.json')));
   const home = readFileSync(join(dist, 'index.html'), 'utf8');
-  assert.equal(home.match(/class="project-card"/g)?.length, projects.length);
-  assert.equal(home.match(/<button\b[^>]*data-skill-bubble\b/g)?.length, skills.length);
-  for (const project of projects) assert.ok(home.includes(`data-keywords="${project.keywords.map((keyword) => keyword.toLowerCase()).join('|')}"`));
+  const projectPage = readFileSync(join(dist, 'projets/index.html'), 'utf8');
+  assert.equal(home.match(/class="project-card"/g)?.length, 3);
+  assert.equal(projectPage.match(/class="project-card"/g)?.length, projects.length);
+  for (const name of ['Python Runner', 'Find &amp; Replace', 'Indexium']) assert.ok(home.includes(`<h3>${name}</h3>`));
+  assert.equal(projectPage.match(/class="project-card-image"/g)?.length, projects.length);
+  assert.equal(home.match(/class="writing-card"/g)?.length, 3);
+  assert.equal(projectPage.match(/<button\b[^>]*data-skill-bubble\b/g)?.length, skills.length);
+  for (const project of projects) assert.ok(projectPage.includes(`data-keywords="${project.keywords.map((keyword) => keyword.toLowerCase()).join('|')}"`));
   for (const skill of skills) {
     const hasProject = projects.some((project) => project.keywords.some((keyword) => keyword.toLowerCase() === skill.name.toLowerCase()));
-    assert.ok(home.includes(`data-skill="${skill.name.toLowerCase()}" data-has-project="${hasProject}"`));
+    assert.ok(projectPage.includes(`data-skill="${skill.name.toLowerCase()}" data-has-project="${hasProject}"`));
+    assert.ok(home.includes(`<strong>${skill.name}</strong>`));
   }
-  assert.ok(!existsSync(join(dist, 'projets/index.html')));
-  for (const skill of ['python', 'django', 'rust']) assert.match(home, new RegExp(`data-skill="${skill}" data-has-project="true"`));
-  assert.match(home, /data-keywords="rust\|cli\|tools"/);
-  assert.match(home, /Je mène mes missions via ma société/);
-  assert.match(home, /Applications,/);
+  for (const skill of ['python', 'django', 'rust']) assert.match(projectPage, new RegExp(`data-skill="${skill}" data-has-project="true"`));
+  assert.match(projectPage, /data-keywords="rust\|cli\|tools"/);
+  assert.match(home, /Applications, données, déploiement./);
+  assert.match(home, /Voir tous mes projets/);
+  assert.match(home, /Voir tous les articles/);
+  assert.match(home, /href="\/#competences"/);
+  assert.match(readFileSync(join(dist, 'blog/2026/01/16/automatically-start-program-at-startup-on-windows/index.html'), 'utf8'), /<html lang="fr">/);
+  assert.match(readFileSync(join(dist, 'blog/2026/01/16/create-an-anacron/index.html'), 'utf8'), /<html lang="en">/);
   assert.match(home, /mailto:contact@rayan.world/);
   assert.ok(!pages.some((file) => /Marseille|Enoé Énergies|Profil personnel|rayan13170@protonmail\.com/.test(readFileSync(file, 'utf8'))));
   assert.ok(pages.every((file) => [...readFileSync(file, 'utf8').matchAll(/<a\b[^>]*href="https:\/\/flowshift\.rayan\.world\/"[^>]*>/g)].every(([link]) => /target="_blank"/.test(link) && /rel="noopener noreferrer"/.test(link))));

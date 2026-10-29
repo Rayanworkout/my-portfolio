@@ -28,6 +28,6 @@ Pour ajouter un projet, ajouter un objet à `src/data/projects.json`. Tous les p
 - Servir `dist/` à la racine de `https://rayan.world` ; `wrangler.jsonc` est prêt pour Cloudflare Workers Assets.
 - Activer HTTPS et configurer l’hébergeur pour servir `404.html` avec le statut HTTP 404.
 portpor- Mettre en place une redirection permanente de l’ancien `blog.rayan.world/AAAA/MM/JJ/slug/` vers `rayan.world/blog/AAAA/MM/JJ/slug/`.
-- Garder `site/` sur `flowshift.rayan.world` ; son blog professionnel conserve ses propres contenus et URLs.
+- Garder `site/` sur `flowshift.fr` ; son blog professionnel conserve ses propres contenus et URLs.
 
 Le site personnel ne requiert aucun serveur applicatif. Un court script gère les filtres et les commandes du carrousel ; tous les projets restent accessibles par défilement sans JavaScript. Les fontes sont hébergées avec le site ; leurs licences OFL sont dans `public/fonts/`.

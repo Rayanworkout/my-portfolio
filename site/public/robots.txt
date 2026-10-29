@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://flowshift.rayan.world/sitemap.xml
+Sitemap: https://flowshift.fr/sitemap.xml

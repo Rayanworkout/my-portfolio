@@ -5,17 +5,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Comment cadrer une application métier sur mesure ? | Flowshift</title>
-  <meta name="description" content="Les points à définir avant de développer une application métier : utilisateurs, tâches, données, droits d’accès, intégrations et mise en production.">
+  <meta name="description"
+    content="Les points à définir avant de développer une application métier : utilisateurs, tâches, données, droits d’accès, intégrations et mise en production.">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Flowshift">
   <meta property="og:type" content="article">
   <meta property="og:title" content="Comment cadrer une application métier sur mesure ?">
-  <meta property="og:description" content="Partir des tâches des équipes pour définir un premier périmètre utile et exploitable.">
-  <meta property="og:url" content="https://flowshift.rayan.world/blog/cadrer-application-metier.html">
-  <link rel="canonical" href="https://flowshift.rayan.world/blog/cadrer-application-metier.html">
+  <meta property="og:description"
+    content="Partir des tâches des équipes pour définir un premier périmètre utile et exploitable.">
+  <meta property="og:url" content="https://flowshift.fr/blog/cadrer-application-metier.html">
+  <link rel="canonical" href="https://flowshift.fr/blog/cadrer-application-metier.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="../assets/tailwind.css">
   <link rel="stylesheet" href="../assets/site.css">
   <link rel="stylesheet" href="../assets/ligne-claire.css">
@@ -24,13 +28,16 @@
 <body class="ligne-claire bg-canvas font-sans text-ink antialiased">
   <a href="#contenu" class="skip-link">Aller au contenu</a>
   <header class="border-b border-line bg-canvas">
-    <div class="mx-auto flex max-w-7xl flex-col items-start gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between lg:px-8">
+    <div
+      class="mx-auto flex max-w-7xl flex-col items-start gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between lg:px-8">
       <a href="../index.html" class="site-logo text-sm font-semibold tracking-[0.18em] uppercase">Flowshift</a>
-      <nav aria-label="Navigation principale" class="site-nav flex flex-wrap items-center gap-x-5 gap-y-3 text-sm font-medium text-muted sm:justify-end lg:gap-8">
+      <nav aria-label="Navigation principale"
+        class="site-nav flex flex-wrap items-center gap-x-5 gap-y-3 text-sm font-medium text-muted sm:justify-end lg:gap-8">
         <a href="../index.html" class="transition hover:text-ink">Accueil</a>
         <a href="../services.html" class="transition hover:text-ink">Services</a>
         <a href="../blog.html" class="transition hover:text-ink">Blog</a>
-        <a href="../contact.html" class="rounded-md border border-line px-4 py-2 text-ink transition hover:border-accent hover:text-accent">Contact</a>
+        <a href="../contact.html"
+          class="rounded-md border border-line px-4 py-2 text-ink transition hover:border-accent hover:text-accent">Contact</a>
       </nav>
     </div>
   </header>
@@ -40,36 +47,57 @@
       <p class="section-label">Développement métier</p>
       <h1>Comment cadrer une application métier sur mesure ?</h1>
       <p class="flow-detail-type mt-4">Par Flowshift</p>
-      <p>Un bon cadrage décrit le travail que l’application doit rendre possible, les informations qu’elle utilise et les conditions de son exploitation.</p>
+      <p>Un bon cadrage décrit le travail que l’application doit rendre possible, les informations qu’elle utilise et
+        les conditions de son exploitation.</p>
     </header>
 
     <article class="flow-article">
-      <p>Une demande d’application commence souvent par une liste d’écrans. Pourtant, les écrans ne disent pas toujours qui prend une décision, quelles données sont nécessaires ou ce qui se passe après une validation. Pour définir un premier périmètre, partez d’une tâche concrète que les équipes accomplissent déjà.</p>
+      <p>Une demande d’application commence souvent par une liste d’écrans. Pourtant, les écrans ne disent pas toujours
+        qui prend une décision, quelles données sont nécessaires ou ce qui se passe après une validation. Pour définir
+        un premier périmètre, partez d’une tâche concrète que les équipes accomplissent déjà.</p>
 
       <h2>Décrire le parcours d’un utilisateur</h2>
-      <p>Prenez un cas fréquent, du début à la fin : une demande arrive, une personne la vérifie, une autre la traite, puis le résultat est partagé. Qui intervient à chaque étape ? Quelles informations consulte-t-on ? Qu’est-ce qui bloque aujourd’hui ? Quelques exemples réels font apparaître les règles que des maquettes seules peuvent manquer.</p>
-      <p>Identifiez ensuite les cas moins courants qui changent le parcours : correction d’une saisie, annulation, pièce manquante ou transfert à une autre équipe. Il n’est pas nécessaire de tout développer dès la première version, mais ces cas doivent être connus pour éviter un modèle de données trop étroit.</p>
+      <p>Prenez un cas fréquent, du début à la fin : une demande arrive, une personne la vérifie, une autre la traite,
+        puis le résultat est partagé. Qui intervient à chaque étape ? Quelles informations consulte-t-on ? Qu’est-ce qui
+        bloque aujourd’hui ? Quelques exemples réels font apparaître les règles que des maquettes seules peuvent
+        manquer.</p>
+      <p>Identifiez ensuite les cas moins courants qui changent le parcours : correction d’une saisie, annulation, pièce
+        manquante ou transfert à une autre équipe. Il n’est pas nécessaire de tout développer dès la première version,
+        mais ces cas doivent être connus pour éviter un modèle de données trop étroit.</p>
 
       <h2>Préciser les données et les droits d’accès</h2>
-      <p>Notez quelles données seront saisies dans l’application et lesquelles viendront d’un ERP, d’un fichier ou d’une API. Définissez la source de référence de chaque information. Si une donnée est modifiée ailleurs, précisez quand l’application doit recevoir la mise à jour et ce qu’elle doit faire en cas de conflit.</p>
-      <p>Les droits se définissent par action : qui peut voir, créer, modifier, valider ou exporter ? Les équipes n’ont pas toujours les mêmes besoins, et certains champs peuvent demander une restriction particulière. Cette question influence la conception de l’application dès le départ.</p>
+      <p>Notez quelles données seront saisies dans l’application et lesquelles viendront d’un ERP, d’un fichier ou d’une
+        API. Définissez la source de référence de chaque information. Si une donnée est modifiée ailleurs, précisez
+        quand l’application doit recevoir la mise à jour et ce qu’elle doit faire en cas de conflit.</p>
+      <p>Les droits se définissent par action : qui peut voir, créer, modifier, valider ou exporter ? Les équipes n’ont
+        pas toujours les mêmes besoins, et certains champs peuvent demander une restriction particulière. Cette question
+        influence la conception de l’application dès le départ.</p>
 
       <h2>Choisir un premier périmètre utilisable</h2>
-      <p>Une première version doit couvrir un parcours complet : une information entre, elle est traitée, puis son résultat est retrouvé. Cela permet aux utilisateurs d’essayer le travail réel dans l’outil. Les fonctions qui n’aident pas ce parcours peuvent être évaluées après ce premier usage.</p>
-      <p>Pour valider le périmètre, formulez quelques scénarios observables. Par exemple : « un gestionnaire crée une demande, un responsable la valide, puis chacun retrouve son statut ». Ces scénarios servent aussi à vérifier le développement avant la mise en service.</p>
+      <p>Une première version doit couvrir un parcours complet : une information entre, elle est traitée, puis son
+        résultat est retrouvé. Cela permet aux utilisateurs d’essayer le travail réel dans l’outil. Les fonctions qui
+        n’aident pas ce parcours peuvent être évaluées après ce premier usage.</p>
+      <p>Pour valider le périmètre, formulez quelques scénarios observables. Par exemple : « un gestionnaire crée une
+        demande, un responsable la valide, puis chacun retrouve son statut ». Ces scénarios servent aussi à vérifier le
+        développement avant la mise en service.</p>
 
       <h2>Inclure la mise en production dans le cadrage</h2>
-      <p>Où l’application sera-t-elle hébergée ? Qui pourra la déployer, la sauvegarder et consulter ses erreurs ? Comment les comptes seront-ils créés ? Ces décisions influencent le coût et le calendrier du projet. Prévoyez la documentation des tâches courantes et la transmission à l’équipe qui fera vivre l’outil.</p>
-      <p>Un cadrage utile se termine par un résultat attendu, des exemples de données, des rôles clairs et une façon de vérifier que l’application rend bien le service promis.</p>
+      <p>Où l’application sera-t-elle hébergée ? Qui pourra la déployer, la sauvegarder et consulter ses erreurs ?
+        Comment les comptes seront-ils créés ? Ces décisions influencent le coût et le calendrier du projet. Prévoyez la
+        documentation des tâches courantes et la transmission à l’équipe qui fera vivre l’outil.</p>
+      <p>Un cadrage utile se termine par un résultat attendu, des exemples de données, des rôles clairs et une façon de
+        vérifier que l’application rend bien le service promis.</p>
       <div class="flow-article-end">
-        <p>Vous envisagez un outil interne ? Découvrez mes <a href="../services.html">services de développement d’applications métier</a> ou <a href="../contact.html">décrivez votre projet</a>.</p>
+        <p>Vous envisagez un outil interne ? Découvrez mes <a href="../services.html">services de développement
+            d’applications métier</a> ou <a href="../contact.html">décrivez votre projet</a>.</p>
         <a href="../blog.html" class="flow-text-link">Tous les articles <span aria-hidden="true">↗</span></a>
       </div>
     </article>
   </main>
 
   <footer class="border-t border-line bg-surface">
-    <div class="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 text-sm text-muted lg:flex-row lg:items-center lg:justify-between lg:px-8">
+    <div
+      class="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 text-sm text-muted lg:flex-row lg:items-center lg:justify-between lg:px-8">
       <p>Flowshift</p>
       <nav aria-label="Navigation secondaire" class="site-footer-links flex flex-wrap gap-4">
         <a href="../index.html" class="transition hover:text-ink">Accueil</a>

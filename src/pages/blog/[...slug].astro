@@ -15,8 +15,8 @@ const toc = headings.filter((heading) => heading.depth === 2);
 const tags = post.data.tags.length ? post.data.tags : ['Sans catégorie'];
 const articleLang = post.data.lang;
 ---
-<Base title={post.data.title} description={excerpt(post)} type="article">
-  <article class="shell article-page"><a class="back-link" href="/blog/">Tous les articles</a><header class="article-header"><p class="section-kicker">Blog personnel</p><time datetime={post.id.slice(0, 10)}>{dateLabel(post)}</time><h1 lang={articleLang}>{post.data.title}</h1><nav class="article-tags" aria-label="Catégories de l’article">{tags.map((tag) => <a href={`/blog/categories/${slug(tag)}/`}>{label(tag)}</a>)}</nav></header>
+<Base title={post.data.title} description={excerpt(post)} type="article" lang={articleLang}>
+  <article class="shell article-page"><a class="back-link" href="/blog/">Tous les articles</a><header class="article-header"><p class="section-kicker">Blog personnel · {articleLang.toUpperCase()}</p><time datetime={post.id.slice(0, 10)}>{dateLabel(post)}</time><h1 lang={articleLang}>{post.data.title}</h1><nav class="article-tags" aria-label="Catégories de l’article">{tags.map((tag) => <a href={`/blog/categories/${slug(tag)}/`}>{label(tag)}</a>)}</nav></header>
     <div class="article-grid"><div class="prose" lang={articleLang}>{toc.length >= 3 && <nav class="toc" aria-label="Sommaire"><h2>Dans cet article</h2><ol>{toc.map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></nav>}<Content /></div></div>
     <nav class="article-next" aria-label="Autres articles">{previous && <a href={postUrl(previous)}><span>Article précédent</span><strong>{previous.data.title}</strong></a>}{next && <a href={postUrl(next)}><span>Article suivant</span><strong>{next.data.title}</strong></a>}</nav>
   </article>
