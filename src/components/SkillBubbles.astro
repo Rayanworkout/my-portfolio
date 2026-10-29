@@ -1,14 +1,10 @@
 ---
 const { skills, projects } = Astro.props;
+const projectSkills = skills.filter((skill) => projects.some((project) => project.keywords.some((keyword) => keyword.toLowerCase() === skill.name.toLowerCase())));
 ---
 <div class="skill-playground">
   <ul class="skill-bubbles">
-    {skills.map((skill) => <li>
-      <button class="skill-bubble" type="button" aria-label={`${skill.name} : ${skill.description.join(' ')}`} aria-pressed="false" data-skill-bubble data-skill={skill.name.toLowerCase()} data-has-project={projects.some((project) => project.keywords.some((keyword) => keyword.toLowerCase() === skill.name.toLowerCase())) ? 'true' : 'false'}>
-        <span class="skill-bubble-face">{skill.name}</span>
-        <span class="skill-tooltip" aria-hidden="true">{skill.description.join(' ')}</span>
-      </button>
-    </li>)}
+    {projectSkills.map((skill) => <li><button class="skill-bubble" type="button" aria-pressed="false" data-skill-bubble data-skill={skill.name.toLowerCase()}>{skill.name}</button></li>)}
   </ul>
 </div>
 
@@ -17,31 +13,17 @@ const { skills, projects } = Astro.props;
   const cards = [...document.querySelectorAll('.project-item')];
   const grid = document.querySelector('.projects-grid');
   const selection = document.querySelector('#project-selection');
-  const selectionText = selection.querySelector('span');
 
   function selectSkill(bubble) {
     const skill = bubble?.dataset.skill;
     const matches = skill ? cards.filter((card) => card.dataset.keywords.split('|').includes(skill)) : [];
     grid.toggleAttribute('data-filtering', matches.length > 0);
     cards.forEach((card) => card.toggleAttribute('data-match', matches.includes(card)));
-    bubbles.forEach((item) => item.setAttribute('aria-pressed', String(item === bubble)));
+    bubbles.forEach((item) => item.setAttribute('aria-pressed', String(item === bubble && matches.length > 0)));
     selection.hidden = !matches.length;
-    if (matches.length) selectionText.textContent = `${matches.length} projet${matches.length > 1 ? 's' : ''} avec ${bubble.querySelector('.skill-bubble-face').textContent}`;
+    if (matches.length) selection.querySelector('span').textContent = `${matches.length} projet${matches.length > 1 ? 's' : ''} avec ${bubble.textContent}`;
   }
 
-  for (const bubble of document.querySelectorAll('[data-skill-bubble]')) {
-    bubble.addEventListener('click', () => {
-      const wasSelected = bubble.getAttribute('aria-pressed') === 'true';
-      document.querySelectorAll('[data-skill-bubble][data-open]').forEach((item) => item.removeAttribute('data-open'));
-      bubble.toggleAttribute('data-open');
-      if (bubble.dataset.hasProject === 'true') {
-        selectSkill(wasSelected ? null : bubble);
-        if (!wasSelected) document.querySelector('#projets').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-      }
-    });
-  }
+  bubbles.forEach((bubble) => bubble.addEventListener('click', () => selectSkill(bubble.getAttribute('aria-pressed') === 'true' ? null : bubble)));
   document.querySelector('#clear-project-selection').addEventListener('click', () => selectSkill(null));
-  document.addEventListener('pointerdown', (event) => {
-    if (!event.target.closest('[data-skill-bubble]')) document.querySelectorAll('[data-skill-bubble][data-open]').forEach((bubble) => bubble.removeAttribute('data-open'));
-  });
 </script>

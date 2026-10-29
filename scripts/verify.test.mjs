@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { test } from 'node:test';
+import { runInNewContext } from 'node:vm';
 
 const root = new URL('../', import.meta.url).pathname;
 const dist = join(root, 'dist');
@@ -29,14 +30,14 @@ test('all migrated content is built on the one domain', () => {
   for (const name of ['Python Runner', 'Find &amp; Replace', 'Indexium']) assert.ok(home.includes(`<h3>${name}</h3>`));
   assert.equal(projectPage.match(/class="project-card-image"/g)?.length, projects.length);
   assert.equal(home.match(/class="writing-card"/g)?.length, 3);
-  assert.equal(projectPage.match(/<button\b[^>]*data-skill-bubble\b/g)?.length, skills.length);
+  const projectSkills = skills.filter((skill) => projects.some((project) => project.keywords.some((keyword) => keyword.toLowerCase() === skill.name.toLowerCase())));
+  assert.equal(projectPage.match(/<button\b[^>]*data-skill-bubble\b/g)?.length, projectSkills.length);
   for (const project of projects) assert.ok(projectPage.includes(`data-keywords="${project.keywords.map((keyword) => keyword.toLowerCase()).join('|')}"`));
   for (const skill of skills) {
-    const hasProject = projects.some((project) => project.keywords.some((keyword) => keyword.toLowerCase() === skill.name.toLowerCase()));
-    assert.ok(projectPage.includes(`data-skill="${skill.name.toLowerCase()}" data-has-project="${hasProject}"`));
+    assert.equal(projectPage.includes(`data-skill="${skill.name.toLowerCase()}"`), projectSkills.includes(skill));
     assert.ok(home.includes(`<strong>${skill.name}</strong>`));
   }
-  for (const skill of ['python', 'django', 'rust']) assert.match(projectPage, new RegExp(`data-skill="${skill}" data-has-project="true"`));
+  for (const skill of ['python', 'django', 'rust']) assert.match(projectPage, new RegExp(`data-skill="${skill}"`));
   assert.match(projectPage, /data-keywords="rust\|cli\|tools"/);
   assert.match(home, /Applications, données, déploiement./);
   assert.match(home, /Voir tous mes projets/);
@@ -45,6 +46,10 @@ test('all migrated content is built on the one domain', () => {
   assert.match(readFileSync(join(dist, 'blog/2026/01/16/automatically-start-program-at-startup-on-windows/index.html'), 'utf8'), /<html lang="fr">/);
   assert.match(readFileSync(join(dist, 'blog/2026/01/16/create-an-anacron/index.html'), 'utf8'), /<html lang="en">/);
   assert.match(home, /mailto:contact@rayan.world/);
+  const blog = readFileSync(join(dist, 'blog/index.html'), 'utf8');
+  assert.equal(blog.match(/<button\b[^>]*data-blog-filter/g)?.length, 9);
+  assert.equal(blog.match(/class="post-row" data-tags/g)?.length, sourcePosts.length);
+  assert.equal((blog.match(/data-tags="[^"]*networking[^"]*"/g) || []).length, 12);
   assert.ok(!pages.some((file) => /Marseille|Enoé Énergies|Profil personnel|rayan13170@protonmail\.com/.test(readFileSync(file, 'utf8'))));
   assert.ok(pages.every((file) => [...readFileSync(file, 'utf8').matchAll(/<a\b[^>]*href="https:\/\/flowshift\.rayan\.world\/"[^>]*>/g)].every(([link]) => /target="_blank"/.test(link) && /rel="noopener noreferrer"/.test(link))));
   assert.ok(!pages.some((file) => readFileSync(file, 'utf8').includes('blog.rayan.world')));
@@ -79,4 +84,64 @@ test('technical articles keep code rendering and the sitemap covers all routes',
   const sitemap = readFileSync(join(dist, 'sitemap.xml'), 'utf8');
   assert.equal((sitemap.match(/<loc>/g) || []).length, pages.length - 1);
   assert.ok(!pages.some((page) => readFileSync(page, 'utf8').includes('[[')));
+});
+
+test('blog and project filters update the visible results', () => {
+  const blog = readFileSync(join(dist, 'blog/index.html'), 'utf8');
+  const script = blog.match(/<script type="module">([\s\S]*?)<\/script>/)[1];
+  const rows = [...blog.matchAll(/<article class="post-row" data-tags(?:="([^"]*)")?/g)].map(([, tags = '']) => ({ dataset: { tags }, hidden: false }));
+  const all = { dataset: {}, addEventListener(_, handler) { this.click = handler; }, setAttribute() {} };
+  const networking = { dataset: { tag: 'networking', label: 'networking' }, addEventListener(_, handler) { this.click = handler; }, setAttribute() {} };
+  const heading = { textContent: '' };
+  const count = { textContent: '' };
+  runInNewContext(script, { document: {
+    querySelectorAll: (selector) => selector === '[data-blog-filter]' ? [all, networking] : rows,
+    querySelector: (selector) => selector === '#all-posts-title' ? heading : count,
+  } });
+  networking.click();
+  assert.equal(rows.filter((row) => !row.hidden).length, 12);
+  assert.equal(count.textContent, '12 notes');
+  all.click();
+  assert.equal(rows.filter((row) => !row.hidden).length, rows.length);
+
+  const projectPage = readFileSync(join(dist, 'projets/index.html'), 'utf8');
+  const projectScript = projectPage.match(/<script type="module">([\s\S]*?)<\/script>/)[1];
+  const projectRows = [...projectPage.matchAll(/class="project-item" data-keywords="([^"]+)"/g)].map(([, keywords]) => ({ dataset: { keywords }, toggleAttribute(name, value) { this[name] = value; } }));
+  const bubble = { dataset: { skill: 'rust' }, textContent: 'Rust', pressed: 'false', addEventListener(_, handler) { this.click = handler; }, getAttribute() { return this.pressed; }, setAttribute(_, value) { this.pressed = value; } };
+  const grid = { toggleAttribute(_, value) { this.filtering = value; } };
+  const selection = { hidden: true, querySelector: () => ({ textContent: '' }) };
+  const clear = { addEventListener(_, handler) { this.click = handler; } };
+  runInNewContext(projectScript, { document: {
+    querySelectorAll: (selector) => selector === '[data-skill-bubble]' ? [bubble] : projectRows,
+    querySelector: (selector) => ({ '.projects-grid': grid, '#project-selection': selection, '#clear-project-selection': clear })[selector],
+  } });
+  bubble.click();
+  assert.equal(projectRows.filter((row) => row['data-match']).length, 1);
+  assert.equal(bubble.pressed, 'true');
+  clear.click();
+  assert.equal(grid.filtering, false);
+});
+
+test('navbar contact copies its visible address and reports failure', async () => {
+  const home = readFileSync(join(dist, 'index.html'), 'utf8');
+  assert.match(home, /<button[^>]*data-copy-email[^>]*>contact@rayan\.world<\/button>/);
+  assert.doesNotMatch(home, /class="nav-contact" href="mailto:/);
+  const script = home.match(/<script type="module">([\s\S]*?data-copy-email[\s\S]*?)<\/script>/)[1];
+  const status = { textContent: '' };
+  const button = { textContent: 'contact@rayan.world', dataset: {}, addEventListener(_, handler) { this.click = handler; } };
+  let copied;
+  const context = {
+    document: { querySelector: (selector) => selector === '[data-copy-email]' ? button : status },
+    navigator: { clipboard: { writeText: async (value) => { copied = value; } } },
+    clearTimeout() {}, setTimeout() { return 1; },
+  };
+  runInNewContext(script, context);
+  await button.click();
+  assert.equal(copied, 'contact@rayan.world');
+  assert.equal(button.dataset.copyState, 'copied');
+  assert.equal(status.textContent, 'Adresse copiée.');
+  context.navigator.clipboard.writeText = async () => { throw new Error('denied'); };
+  await button.click();
+  assert.equal(button.dataset.copyState, 'failed');
+  assert.match(status.textContent, /Copie impossible/);
 });

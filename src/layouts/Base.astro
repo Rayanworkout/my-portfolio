@@ -37,14 +37,15 @@ const onProjects = Astro.url.pathname.startsWith('/projets/');
           <a href="/#competences">Compétences</a>
           <a href="/blog/" aria-current={onBlog ? 'page' : undefined}>Blog</a>
           <a href="https://flowshift.fr/" target="_blank" rel="noopener noreferrer">Flowshift <span aria-hidden="true">↗</span></a>
-          <a class="nav-contact" href="mailto:contact@rayan.world">Contact</a>
+          <button class="nav-contact" type="button" data-copy-email aria-label="Copier l’adresse contact@rayan.world">contact@rayan.world</button>
+          <span class="sr-only" id="copy-email-status" role="status"></span>
         </nav>
       </div>
     </header>
     <main id="contenu"><slot /></main>
     <footer class="site-footer">
       <div class="shell footer-inner">
-        <div><a class="brand" href="/" translate="no">Rayan<span>.</span></a><p>Développement backend, données et infrastructure.</p></div>
+        <div><a class="brand" href="/" translate="no">Rayan<span>.</span></a><p>Développement backend, flux de données et infrastructure.</p></div>
         <nav aria-label="Liens complémentaires">
           <a href="/projets/">Projets</a>
           <a href="/blog/">Blog</a>
@@ -54,5 +55,22 @@ const onProjects = Astro.url.pathname.startsWith('/projets/');
         </nav>
       </div>
     </footer>
+    <script>
+  const button = document.querySelector('[data-copy-email]');
+  const status = document.querySelector('#copy-email-status');
+  let reset;
+  button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(button.textContent.trim());
+      button.dataset.copyState = 'copied';
+      status.textContent = 'Adresse copiée.';
+    } catch {
+      button.dataset.copyState = 'failed';
+      status.textContent = 'Copie impossible. Utilisez le lien de contact en bas de page.';
+    }
+    clearTimeout(reset);
+    reset = setTimeout(() => { delete button.dataset.copyState; status.textContent = ''; }, 2500);
+  });
+    </script>
   </body>
 </html>
