@@ -43,6 +43,15 @@ const articles = [
     ['Data', 'ETL', 'SQL', 'PostgreSQL', 'Pandas', 'Integration', 'Synchronization', 'Automation', 'Connectors', 'Dashboards', 'Machine Learning', 'Scikit-learn'],
     ['Deployment', 'CI/CD', 'Docker', 'Docker Compose', 'Linux', 'Networking', 'Cloud', 'AWS', 'Google Cloud', 'GitHub Actions', 'Ansible', 'Bash', 'Monitoring', 'Logging', 'Testing', 'Pytest'],
   ];
+  for (const list of choices) for (let i = list.length - 1; i > 1; i--) {
+    const j = 1 + Math.floor(Math.random() * i);
+    [list[i], list[j]] = [list[j], list[i]];
+  }
+  try {
+    const key = 'hero-order-en';
+    if (localStorage.getItem(key) === JSON.stringify(choices)) [choices[0][1], choices[0][2]] = [choices[0][2], choices[0][1]];
+    localStorage.setItem(key, JSON.stringify(choices));
+  } catch { /* Storage may be unavailable; the shuffled order still works. */ }
   const positions = [0, 0, 0];
   const order = [1, 2, 0, 2, 1, 0];
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
