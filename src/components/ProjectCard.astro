@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 
-const { project } = Astro.props;
+const { project, lang = 'fr' } = Astro.props;
 const images = import.meta.glob('../assets/projects/*.jpg', { eager: true, import: 'default' });
 ---
 
@@ -17,13 +17,13 @@ const images = import.meta.glob('../assets/projects/*.jpg', { eager: true, impor
   )}
   <div class="project-card-body">
     <h3>{project.name}</h3>
-    <p>{project.description}</p>
-    <ul class="tag-list" aria-label={`Technologies pour ${project.name}`}>
+    <p>{lang === 'en' ? project.descriptionEn : project.description}</p>
+    <ul class="tag-list" aria-label={lang === 'en' ? `Technologies for ${project.name}` : `Technologies pour ${project.name}`}>
       {project.keywords.map((keyword) => <li>{keyword}</li>)}
     </ul>
     {(project.link || project.githubLink) && <div class="project-card-links">
-      {project.link && <a href={project.link}>Voir le projet <span aria-hidden="true">↗</span></a>}
-      {project.githubLink && <a href={project.githubLink}>Code source <span aria-hidden="true">↗</span></a>}
+      {project.link && <a href={project.link}>{lang === 'en' ? 'View project' : 'Voir le projet'} <span aria-hidden="true">↗</span></a>}
+      {project.githubLink && <a href={project.githubLink}>{lang === 'en' ? 'Source code' : 'Code source'} <span aria-hidden="true">↗</span></a>}
     </div>}
   </div>
 </article>

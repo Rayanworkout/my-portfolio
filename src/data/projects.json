@@ -2,6 +2,7 @@
   {
     "name": "Find & Replace",
     "description": "Outil en ligne de commande écrit en Rust pour rechercher et remplacer plusieurs motifs dans des fichiers.",
+    "descriptionEn": "A Rust command-line tool for finding and replacing multiple patterns in files.",
     "image": "thunder",
     "keywords": [
       "rust",
@@ -15,6 +16,7 @@
   {
     "name": "Python Runner",
     "description": "Exécute automatiquement des scripts avec suivi précis, journaux et notifications par courriel.",
+    "descriptionEn": "Runs scripts automatically with detailed monitoring, logs and email notifications.",
     "image": "pipeline",
     "keywords": [
       "python",
@@ -29,6 +31,7 @@
   {
     "name": "Indexium",
     "description": "Moteur de recherche / indexeur ultra rapide basé sur Apache Lucene, exposé par une API REST.",
+    "descriptionEn": "A very fast search engine and indexer based on Apache Lucene, exposed through a REST API.",
     "image": "rocket",
     "keywords": [
       "java",
@@ -42,6 +45,7 @@
   {
     "name": "Mini Web Server",
     "description": "Mini serveur web développé en Python à partir de zéro. Il gère les requêtes GET, les fichiers statiques et le contenu dynamique.",
+    "descriptionEn": "A small web server built from scratch in Python. It handles GET requests, static files and dynamic content.",
     "image": "globe",
     "keywords": [
       "python",
@@ -55,6 +59,7 @@
   {
     "name": "Predicting Drug Consumption",
     "description": "Application Django Ninja et React présentant une analyse statistique interactive sur la consommation de drogues et la personnalité.",
+    "descriptionEn": "A Django Ninja and React application with an interactive statistical analysis of drug use and personality.",
     "image": "drug",
     "keywords": [
       "python",
@@ -70,6 +75,7 @@
   {
     "name": "Email Spam Detector",
     "description": "Petit projet de classification des courriels indésirables avec l’algorithme random forest.",
+    "descriptionEn": "A small spam email classification project using the random forest algorithm.",
     "image": "ladybug",
     "keywords": [
       "python",
@@ -83,6 +89,7 @@
   {
     "name": "Simple Continuous Integration",
     "description": "Système d’intégration continue en Python qui lance les tests après chaque push, avec une interface de suivi des journaux.",
+    "descriptionEn": "A Python continuous integration system that runs tests after each push, with an interface for viewing logs.",
     "image": "pipeline",
     "keywords": [
       "python",

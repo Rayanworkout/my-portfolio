@@ -4,8 +4,11 @@ import dmFont from '@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal
 import plexFont from '@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2?url';
 const { title, description, type = 'website', noindex = false, lang = 'fr' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const onBlog = Astro.url.pathname.startsWith('/blog/');
-const onProjects = Astro.url.pathname.startsWith('/projets/');
+const prefix = lang === 'en' ? '/en' : '';
+const localPath = Astro.url.pathname.replace(/^\/en(?=\/|$)/, '') || '/';
+const otherPath = noindex ? (lang === 'en' ? '/' : '/en/') : lang === 'en' ? localPath : `/en${localPath}`;
+const onBlog = localPath.startsWith('/blog/');
+const onProjects = localPath.startsWith('/projets/');
 ---
 <!doctype html>
 <html lang={lang}>
@@ -17,6 +20,8 @@ const onProjects = Astro.url.pathname.startsWith('/projets/');
     <title>{title} | Rayan</title>
     <meta name="description" content={description} />
     {!noindex && <link rel="canonical" href={canonical.href} />}
+    {!noindex && <link rel="alternate" hreflang="fr" href={new URL(localPath, Astro.site).href} />}
+    {!noindex && <link rel="alternate" hreflang="en" href={new URL(`/en${localPath}`, Astro.site).href} />}
     <meta property="og:type" content={type} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -26,18 +31,28 @@ const onProjects = Astro.url.pathname.startsWith('/projets/');
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preload" href={dmFont} as="font" type="font/woff2" crossorigin="anonymous" />
     <link rel="preload" href={plexFont} as="font" type="font/woff2" crossorigin="anonymous" />
+    <script is:inline>
+      try {
+        const path = location.pathname;
+        const current = path.startsWith('/en/') ? 'en' : 'fr';
+        const browserLanguage = (navigator.languages || [navigator.language]).find((language) => /^(fr|en)(-|$)/i.test(language)) || 'fr';
+        const preferred = localStorage.getItem('site-language') || browserLanguage.slice(0, 2).toLowerCase();
+        if (preferred !== current && path !== '/404.html') location.replace(preferred === 'en' ? `/en${path}${location.search}${location.hash}` : `${path.slice(3) || '/'}${location.search}${location.hash}`);
+      } catch { /* Storage may be disabled; keep the requested page. */ }
+    </script>
   </head>
   <body>
-    <a class="skip-link" href="#contenu">Aller au contenu</a>
+    <a class="skip-link" href="#contenu">{lang === 'en' ? 'Skip to content' : 'Aller au contenu'}</a>
     <header class="site-header">
       <div class="shell header-inner">
-        <a class="brand" href="/" aria-label="Rayan, accueil" translate="no">Rayan<span>.</span></a>
-        <nav aria-label="Navigation principale">
-          <a href="/projets/" aria-current={onProjects ? 'page' : undefined}>Projets</a>
-          <a href="/#competences">Compétences</a>
-          <a href="/blog/" aria-current={onBlog ? 'page' : undefined}>Blog</a>
+        <a class="brand" href={`${prefix}/`} aria-label={lang === 'en' ? 'Rayan, home' : 'Rayan, accueil'} translate="no">Rayan<span>.</span></a>
+        <nav aria-label={lang === 'en' ? 'Main navigation' : 'Navigation principale'}>
+          <a href={`${prefix}/projets/`} aria-current={onProjects ? 'page' : undefined}>{lang === 'en' ? 'Projects' : 'Projets'}</a>
+          <a href={`${prefix}/#competences`}>{lang === 'en' ? 'Skills' : 'Compétences'}</a>
+          <a href={`${prefix}/blog/`} aria-current={onBlog ? 'page' : undefined}>Blog</a>
           <a href="https://flowshift.fr/" target="_blank" rel="noopener noreferrer">Flowshift <span aria-hidden="true">↗</span></a>
-          <button class="nav-contact" type="button" data-copy-email aria-label="Copier l’adresse contact@rayan.world">contact@rayan.world</button>
+          <a href={otherPath} data-language-switch={lang === 'en' ? 'fr' : 'en'} hreflang={lang === 'en' ? 'fr' : 'en'} aria-label={lang === 'en' ? 'Lire en français' : 'Read in English'}>{lang === 'en' ? 'FR' : 'EN'}</a>
+          <button class="nav-contact" type="button" data-copy-email aria-label={lang === 'en' ? 'Copy contact@rayan.world' : 'Copier l’adresse contact@rayan.world'}>contact@rayan.world</button>
           <span class="sr-only" id="copy-email-status" role="status"></span>
         </nav>
       </div>
@@ -45,28 +60,32 @@ const onProjects = Astro.url.pathname.startsWith('/projets/');
     <main id="contenu"><slot /></main>
     <footer class="site-footer">
       <div class="shell footer-inner">
-        <div><a class="brand" href="/" translate="no">Rayan<span>.</span></a><p>Développement backend, flux de données et infrastructure.</p></div>
-        <nav aria-label="Liens complémentaires">
-          <a href="/projets/">Projets</a>
-          <a href="/blog/">Blog</a>
+        <div><a class="brand" href={`${prefix}/`} translate="no">Rayan<span>.</span></a><p>{lang === 'en' ? 'Backend development, data flows and infrastructure.' : 'Développement backend, flux de données et infrastructure.'}</p></div>
+        <nav aria-label={lang === 'en' ? 'Additional links' : 'Liens complémentaires'}>
+          <a href={`${prefix}/projets/`}>{lang === 'en' ? 'Projects' : 'Projets'}</a>
+          <a href={`${prefix}/blog/`}>Blog</a>
           <a href="https://flowshift.fr/" target="_blank" rel="noopener noreferrer">Flowshift</a>
           <a href="https://github.com/Rayanworkout">GitHub</a>
-          <a href="mailto:contact@rayan.world">Courriel</a>
+          <a href="mailto:contact@rayan.world">{lang === 'en' ? 'Email' : 'Courriel'}</a>
         </nav>
       </div>
     </footer>
     <script>
   const button = document.querySelector('[data-copy-email]');
   const status = document.querySelector('#copy-email-status');
+  document.querySelector('[data-language-switch]')?.addEventListener('click', (event) => {
+    try { localStorage.setItem('site-language', event.currentTarget.dataset.languageSwitch); } catch {}
+  });
+  const english = document.documentElement.lang === 'en';
   let reset;
   button.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(button.textContent.trim());
       button.dataset.copyState = 'copied';
-      status.textContent = 'Adresse copiée.';
+      status.textContent = english ? 'Address copied.' : 'Adresse copiée.';
     } catch {
       button.dataset.copyState = 'failed';
-      status.textContent = 'Copie impossible. Utilisez le lien de contact en bas de page.';
+      status.textContent = english ? 'Could not copy. Use the contact link in the footer.' : 'Copie impossible. Utilisez le lien de contact en bas de page.';
     }
     clearTimeout(reset);
     reset = setTimeout(() => { delete button.dataset.copyState; status.textContent = ''; }, 2500);

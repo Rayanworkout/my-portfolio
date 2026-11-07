@@ -31,3 +31,7 @@ portpor- Mettre en place une redirection permanente de l’ancien `blog.rayan.wo
 - Garder `site/` sur `flowshift.fr` ; son blog professionnel conserve ses propres contenus et URLs.
 
 Le site personnel ne requiert aucun serveur applicatif. Un court script gère les filtres et les commandes du carrousel ; tous les projets restent accessibles par défilement sans JavaScript. Les fontes sont hébergées avec le site ; leurs licences OFL sont dans `public/fonts/`.
+
+## Langues
+
+Les pages françaises restent à la racine et leurs équivalents anglais sont sous `/en/`. Le site choisit la première langue française ou anglaise indiquée par le navigateur ; si aucune ne correspond, il garde le français. Le lien FR/EN dans l'en-tête enregistre le choix explicite dans le navigateur. Chaque page publie ses liens `hreflang` et le sitemap contient les deux versions. Les descriptions anglaises des projets et des compétences sont dans `src/data/`.

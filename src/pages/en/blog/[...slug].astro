@@ -1,0 +1,24 @@
+---
+import { render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import { posts, postUrl, dateLabel, excerpt, slug, label } from '../../../lib/content.js';
+export async function getStaticPaths() {
+  const allPosts = await posts();
+  return allPosts.map((post, index) => ({
+    params: { slug: postUrl(post).slice('/blog/'.length, -1) },
+    props: { post, previous: allPosts[index + 1], next: allPosts[index - 1] },
+  }));
+}
+const { post, previous, next } = Astro.props;
+const { Content, headings } = await render(post);
+const toc = headings.filter((heading) => heading.depth === 2);
+const tags = post.data.tags.length ? post.data.tags : ['Sans catégorie'];
+const articleLang = post.data.lang;
+// shortcut: Only the existing French post has an English body here; add a translation when publishing another French post.
+---
+<Base lang="en" title={post.data.title} description={excerpt(post, 'en')} type="article">
+  <article class="shell article-page"><a class="back-link" href="/en/blog/">All articles</a><header class="article-header"><p class="section-kicker">Personal blog · EN</p><time datetime={post.id.slice(0, 10)}>{dateLabel(post, 'en')}</time><h1>{post.data.title}</h1><nav class="article-tags" aria-label="Article categories">{tags.map((tag) => <a href={`/en/blog/categories/${slug(tag)}/`}>{label(tag, 'en')}</a>)}</nav></header>
+    <div class="article-grid"><div class="prose">{toc.length >= 3 && <nav class="toc" aria-label="Contents"><h2>In this article</h2><ol>{toc.map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></nav>}{post.id.endsWith('automatically-start-program-at-startup-on-windows') ? <pre><code>{'win + r → shell:startup\n# Place the .exe or a shortcut to it in the folder that opens\n# %APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup'}</code></pre> : <div lang={articleLang}><Content /></div>}</div></div>
+    <nav class="article-next" aria-label="Other articles">{previous && <a href={`/en${postUrl(previous)}`}><span>Previous article</span><strong>{previous.data.title}</strong></a>}{next && <a href={`/en${postUrl(next)}`}><span>Next article</span><strong>{next.data.title}</strong></a>}</nav>
+  </article>
+</Base>

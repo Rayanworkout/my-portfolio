@@ -18,7 +18,7 @@ function walk(dir) {
 test('all migrated content is built on the one domain', () => {
   const sourcePosts = readdirSync(join(root, 'src/content/blog')).filter((name) => name.endsWith('.md'));
   const builtPosts = pages.filter((file) => /\/blog\/\d{4}\/\d{2}\/\d{2}\/[^/]+\/index\.html$/.test(file));
-  assert.equal(sourcePosts.length, builtPosts.length);
+  assert.equal(sourcePosts.length * 2, builtPosts.length);
   assert.ok(builtPosts.length >= 20);
   assert.ok(existsSync(join(dist, 'blog/categories/index.html')));
   const projects = JSON.parse(readFileSync(join(root, 'src/data/projects.json')));
@@ -44,7 +44,8 @@ test('all migrated content is built on the one domain', () => {
   assert.match(home, /Voir tous les articles/);
   assert.match(home, /href="\/#competences"/);
   assert.match(readFileSync(join(dist, 'blog/2026/01/16/automatically-start-program-at-startup-on-windows/index.html'), 'utf8'), /<html lang="fr">/);
-  assert.match(readFileSync(join(dist, 'blog/2026/01/16/create-an-anacron/index.html'), 'utf8'), /<html lang="en">/);
+  assert.match(readFileSync(join(dist, 'blog/2026/01/16/create-an-anacron/index.html'), 'utf8'), /<html lang="fr">/);
+  assert.match(readFileSync(join(dist, 'en/blog/2026/01/16/create-an-anacron/index.html'), 'utf8'), /<html lang="en">/);
   assert.match(home, /mailto:contact@rayan.world/);
   const blog = readFileSync(join(dist, 'blog/index.html'), 'utf8');
   assert.equal(blog.match(/<button\b[^>]*data-blog-filter/g)?.length, 9);
@@ -111,7 +112,7 @@ test('blog and project filters update the visible results', () => {
   const grid = { toggleAttribute(_, value) { this.filtering = value; } };
   const selection = { hidden: true, querySelector: () => ({ textContent: '' }) };
   const clear = { addEventListener(_, handler) { this.click = handler; } };
-  runInNewContext(projectScript, { document: {
+  runInNewContext(projectScript, { document: { documentElement: { lang: 'fr' },
     querySelectorAll: (selector) => selector === '[data-skill-bubble]' ? [bubble] : projectRows,
     querySelector: (selector) => ({ '.projects-grid': grid, '#project-selection': selection, '#clear-project-selection': clear })[selector],
   } });
@@ -131,7 +132,7 @@ test('navbar contact copies its visible address and reports failure', async () =
   const button = { textContent: 'contact@rayan.world', dataset: {}, addEventListener(_, handler) { this.click = handler; } };
   let copied;
   const context = {
-    document: { querySelector: (selector) => selector === '[data-copy-email]' ? button : status },
+    document: { documentElement: { lang: 'fr' }, querySelector: (selector) => selector === '[data-copy-email]' ? button : selector === '#copy-email-status' ? status : null },
     navigator: { clipboard: { writeText: async (value) => { copied = value; } } },
     clearTimeout() {}, setTimeout() { return 1; },
   };
@@ -144,4 +145,30 @@ test('navbar contact copies its visible address and reports failure', async () =
   await button.click();
   assert.equal(button.dataset.copyState, 'failed');
   assert.match(status.textContent, /Copie impossible/);
+});
+
+test('English pages and browser language selection keep equivalent routes', () => {
+  const home = readFileSync(join(dist, 'index.html'), 'utf8');
+  const english = readFileSync(join(dist, 'en/index.html'), 'utf8');
+  assert.match(english, /<html lang="en">/);
+  assert.match(english, /Applications, data, deployment/);
+  assert.match(english, /href="\/en\/projets\/"/);
+  assert.match(english, /hreflang="fr"/);
+  assert.match(home, /hreflang="en"/);
+  assert.match(readFileSync(join(dist, 'en/projets/index.html'), 'utf8'), /A Rust command-line tool/);
+  assert.match(readFileSync(join(dist, 'en/blog/2026/01/16/automatically-start-program-at-startup-on-windows/index.html'), 'utf8'), /Place the .exe or a shortcut/);
+
+  const script = home.match(/<script>([\s\S]*?)<\/script>/)[1];
+  const redirects = [];
+  const location = { pathname: '/blog/categories/networking/', search: '?page=1', hash: '#posts', replace: (path) => redirects.push(path) };
+  const localStorage = { getItem: () => null };
+  runInNewContext(script, { location, localStorage, navigator: { languages: ['en-US', 'fr-FR'] } });
+  assert.deepEqual(redirects, ['/en/blog/categories/networking/?page=1#posts']);
+  redirects.length = 0;
+  localStorage.getItem = () => 'fr';
+  runInNewContext(script, { location, localStorage, navigator: { languages: ['en-US'] } });
+  assert.equal(redirects.length, 0);
+  location.pathname = '/en/blog/categories/networking/';
+  runInNewContext(script, { location, localStorage, navigator: { languages: ['en-US'] } });
+  assert.deepEqual(redirects, ['/blog/categories/networking/?page=1#posts']);
 });

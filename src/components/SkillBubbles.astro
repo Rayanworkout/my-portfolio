@@ -21,7 +21,7 @@ const projectSkills = skills.filter((skill) => projects.some((project) => projec
     cards.forEach((card) => card.toggleAttribute('data-match', matches.includes(card)));
     bubbles.forEach((item) => item.setAttribute('aria-pressed', String(item === bubble && matches.length > 0)));
     selection.hidden = !matches.length;
-    if (matches.length) selection.querySelector('span').textContent = `${matches.length} projet${matches.length > 1 ? 's' : ''} avec ${bubble.textContent}`;
+    if (matches.length) selection.querySelector('span').textContent = document.documentElement.lang === 'en' ? `${matches.length} project${matches.length > 1 ? 's' : ''} with ${bubble.textContent}` : `${matches.length} projet${matches.length > 1 ? 's' : ''} avec ${bubble.textContent}`;
   }
 
   bubbles.forEach((bubble) => bubble.addEventListener('click', () => selectSkill(bubble.getAttribute('aria-pressed') === 'true' ? null : bubble)));

@@ -1,0 +1,120 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectGrid from '../../components/ProjectGrid.astro';
+import projects from '../../data/projects.json';
+import skills from '../../data/skills.json';
+import { posts, postUrl, excerpt, label } from '../../lib/content.js';
+
+const featured = ['Python Runner', 'Find & Replace', 'Indexium'].map((name) => projects.find((project) => project.name
+=== name));
+const groups = [
+['Backend & API', ['Python', 'Django']],
+['Data', ['PostgreSQL']],
+['Infrastructure & DevOps', ['Docker', 'Linux', 'CI / CD']],
+['Interfaces', ['JavaScript']],
+['Tools & quality', ['Rust', 'Testing']],
+];
+const allPosts = await posts();
+const articles = [
+'safely-expose-self-hosted-services',
+'transmission-gluetun-setup',
+'create-an-anacron',
+].map((name) => allPosts.find((post) => post.id.endsWith(name))).filter(Boolean);
+---
+<Base lang="en" title="Python backend developer & infrastructure"
+  description="Rayan, freelance developer: backend, data and infrastructure. Explore his personal projects, skills and technical notes.">
+<section class="hero">
+  <div class="shell hero-inner">
+    <p class="eyebrow">Rayan · Freelance Developer</p>
+    <h1>Applications, data, deployment</h1>
+    <div class="hero-base">
+      <p>Freelance developer specializing in backend, data flows and infrastructure.</p>
+      <div class="hero-actions"><a class="button" href="#projets">View my projects <span
+            aria-hidden="true">↗</span></a><a class="text-link" href="https://flowshift.fr/" target="_blank"
+          rel="noopener noreferrer">Discover Flowshift</a></div>
+    </div>
+    <div class="hero-trace" aria-hidden="true"><span>Design</span><span>Build</span><span>Deploy</span></div>
+  </div>
+</section>
+
+<section class="section shell about-section" id="apropos" aria-labelledby="about-title">
+  <div class="section-heading">
+    <p class="section-kicker">About</p>
+    <h2 id="about-title">Useful tools, from code to production</h2>
+  </div>
+  <div class="about-content">
+    <div>
+      <p>I’m Rayan, an independent developer. I like designing useful, efficient tools, exploring how
+        systems work and building solutions from start to finish.</p>
+      <p>I work on backend web development, data flow processing, REST APIs and automation, from design to
+        production deployment.</p>
+      <p><b>I help companies with their software needs through my company <a href="https://flowshift.fr/"
+            target="_blank" rel="noopener noreferrer">Flowshift</a></b></p>
+    </div>
+    <div class="main-stack">
+      <h3>My main stack</h3>
+      <ul>
+        <li>Python</li>
+        <li>Django</li>
+        <li>PostgreSQL</li>
+        <li>Docker</li>
+        <li>Linux</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section projects-section" id="projets" aria-labelledby="projects-title">
+  <div class="shell">
+    <div class="section-heading">
+      <p class="section-kicker">Work</p>
+      <h2 id="projects-title">Personal projects</h2>
+      <p>Three personal projects, from a Python script to a Rust tool and Java search.</p>
+    </div>
+    <ProjectGrid projects={featured} lang="en" />
+    <a class="section-more" href="/en/projets/">View all my projects <span aria-hidden="true">→</span></a>
+  </div>
+</section>
+
+<section class="section skills-section" id="competences" aria-labelledby="skills-title">
+  <div class="shell">
+    <div class="section-heading">
+      <p class="section-kicker">In practice</p>
+      <h2 id="skills-title">Skills</h2>
+    </div>
+    <div class="skills-groups">{groups.map(([title, names]) => <div class="skills-group">
+        <h3>{title}</h3>
+        <ul>{names.map((name) => { const skill = skills.find((item) => item.name === name); return <li>
+            <strong>{skill.name}</strong><span>{skill.descriptionEn.join(' ')}</span>
+          </li>; })}</ul>
+      </div>)}</div>
+  </div>
+</section>
+
+<section class="section writing-section" aria-labelledby="writing-title">
+  <div class="shell">
+    <div class="section-heading">
+      <p class="section-kicker">Blog</p>
+      <h2 id="writing-title">My articles</h2>
+    </div>
+    <div class="writing-cards">{articles.map((post) => <article class="writing-card">
+        <div class="writing-meta"><span>{label(post.data.tags[0] ||
+            'Technique')}</span><span>{post.data.lang.toUpperCase()}</span></div>
+        <h3 lang={post.data.lang}><a href={`/en${postUrl(post)}`}>{post.data.title}</a></h3>
+        <p lang={post.data.lang}>{excerpt(post, 'en')}</p>
+      </article>)}</div>
+    <a class="section-more" href="/en/blog/">View all articles <span aria-hidden="true">→</span></a>
+  </div>
+</section>
+
+<section class="contact-section" aria-labelledby="contact-title">
+  <div class="shell contact-inner">
+    <div>
+      <p class="section-kicker">Contact</p>
+      <h2 id="contact-title">Shall we talk?</h2>
+      <p>To discuss a project, a collaboration or a technical question. For development work,
+        you can also visit <a href="https://flowshift.fr/" target="_blank" rel="noopener noreferrer">Flowshift</a>.</p>
+    </div><a class="button" href="mailto:contact@rayan.world">contact@rayan.world <span aria-hidden="true">↗</span></a>
+  </div>
+</section>
+</Base>

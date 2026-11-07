@@ -39,6 +39,8 @@ a:focus-visible { outline: 3px solid var(--cobalt); outline-offset: 4px; border-
 .site-header nav .nav-contact:focus-visible { outline: 3px solid var(--cobalt); outline-offset: 4px; }
 .site-header nav .nav-contact[data-copy-state]::after { position: absolute; top: calc(100% + .35rem); right: 0; z-index: 2; padding: .25rem .5rem; border-radius: 3px; background: var(--ink); color: var(--white); font-size: .8rem; content: 'Copié !'; }
 .site-header nav .nav-contact[data-copy-state="failed"]::after { content: 'Copie impossible'; }
+html[lang="en"] .site-header nav .nav-contact[data-copy-state]::after { content: 'Copied!'; }
+html[lang="en"] .site-header nav .nav-contact[data-copy-state="failed"]::after { content: 'Copy failed'; }
 .site-footer { border-top: 1px solid var(--line); background: var(--paper); }
 .footer-inner { display: flex; justify-content: space-between; gap: 2rem; padding-block: 3.5rem; }
 .footer-inner p { margin: 1rem 0 0; color: var(--muted); font-size: .96rem; }

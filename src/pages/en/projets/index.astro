@@ -1,0 +1,14 @@
+---
+import Base from '../../../layouts/Base.astro';
+import ProjectGrid from '../../../components/ProjectGrid.astro';
+import SkillBubbles from '../../../components/SkillBubbles.astro';
+import projects from '../../../data/projects.json';
+import skills from '../../../data/skills.json';
+---
+<Base lang="en" title="Personal projects" description="All of Rayan’s personal projects: Python and Rust tools, web applications, search and automation.">
+  <section class="section projects-section" id="projets" aria-labelledby="projects-title"><div class="shell">
+    <div class="section-heading"><p class="section-kicker">Portfolio</p><h1 id="projects-title">All my projects.</h1><p>Applications, tools and experiments. Each project links to its source code.</p></div>
+    <div class="project-filters"><h2>Explore by technology</h2><p>Choose a skill to highlight related projects.</p><SkillBubbles skills={skills} projects={projects} /><p class="project-selection" id="project-selection" aria-live="polite" hidden><span></span> <button type="button" id="clear-project-selection">Show all</button></p></div>
+    <ProjectGrid projects={projects} lang="en" />
+  </div></section>
+</Base>
