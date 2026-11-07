@@ -26,7 +26,7 @@ const articles = [
 <section class="hero">
   <div class="shell hero-inner">
     <p class="eyebrow">Rayan · Freelance Developer</p>
-    <h1>Applications, data, deployment</h1>
+    <h1 aria-label="Applications, Data, Deployment" data-hero-words><span class="hero-word" aria-hidden="true"><span>Applications,</span></span><span class="hero-word" aria-hidden="true"><span>Data,</span></span><span class="hero-word" aria-hidden="true"><span>Deployment</span></span></h1>
     <div class="hero-base">
       <p>Freelance developer specializing in backend, data flows and infrastructure.</p>
       <div class="hero-actions"><a class="button" href="#projets">View my projects <span
@@ -36,6 +36,34 @@ const articles = [
     <div class="hero-trace" aria-hidden="true"><span>Design</span><span>Build</span><span>Deploy</span></div>
   </div>
 </section>
+<script>
+  const words = [...document.querySelectorAll('[data-hero-words] .hero-word')];
+  const choices = [
+    ['Applications', 'API', 'Backend', 'Python', 'Django', 'Flask', 'FastAPI', 'REST', 'JavaScript', 'Business Apps', 'ERP', 'CRM', 'Rust', 'Java'],
+    ['Data', 'ETL', 'SQL', 'PostgreSQL', 'Pandas', 'Integration', 'Synchronization', 'Automation', 'Connectors', 'Dashboards', 'Machine Learning', 'Scikit-learn'],
+    ['Deployment', 'CI/CD', 'Docker', 'Docker Compose', 'Linux', 'Networking', 'Cloud', 'AWS', 'Google Cloud', 'GitHub Actions', 'Ansible', 'Bash', 'Monitoring', 'Logging', 'Testing', 'Pytest'],
+  ];
+  const positions = [0, 0, 0];
+  const order = [1, 2, 0, 2, 1, 0];
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  let step = 0;
+
+  function changeWord() {
+    if (document.hidden || reducedMotion.matches) return;
+    const slot = order[step++ % order.length];
+    positions[slot] = (positions[slot] + 1) % choices[slot].length;
+    const word = words[slot];
+    const next = document.createElement('span');
+    next.textContent = choices[slot][positions[slot]] + (slot < 2 ? ',' : '');
+    const stack = document.createElement('span');
+    stack.className = 'hero-word-stack';
+    stack.append(word.firstElementChild, next);
+    word.append(stack);
+    stack.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(-50%)' }], { duration: 1400, easing: 'ease-in-out' }).finished.then(() => word.replaceChildren(next));
+  }
+
+  if (!reducedMotion.matches) setTimeout(() => { changeWord(); setInterval(changeWord, 2400); }, 3200);
+</script>
 
 <section class="section shell about-section" id="apropos" aria-labelledby="about-title">
   <div class="section-heading">

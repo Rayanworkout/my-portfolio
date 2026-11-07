@@ -39,7 +39,7 @@ test('all migrated content is built on the one domain', () => {
   }
   for (const skill of ['python', 'django', 'rust']) assert.match(projectPage, new RegExp(`data-skill="${skill}"`));
   assert.match(projectPage, /data-keywords="rust\|cli\|tools"/);
-  assert.match(home, /Applications, données, déploiement./);
+  assert.match(home, /Applications, Données, Déploiement./);
   assert.match(home, /Voir tous mes projets/);
   assert.match(home, /Voir tous les articles/);
   assert.match(home, /href="\/#competences"/);
@@ -84,7 +84,7 @@ test('technical articles keep code rendering and the sitemap covers all routes',
   assert.match(readFileSync(join(dist, 'blog/2026/01/16/basic-service/index.html'), 'utf8'), /class="astro-code/);
   const sitemap = readFileSync(join(dist, 'sitemap.xml'), 'utf8');
   assert.equal((sitemap.match(/<loc>/g) || []).length, pages.length - 1);
-  assert.ok(!pages.some((page) => readFileSync(page, 'utf8').includes('[[')));
+  assert.ok(!pages.some((page) => readFileSync(page, 'utf8').replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, '').includes('[[')));
 });
 
 test('blog and project filters update the visible results', () => {
@@ -127,7 +127,7 @@ test('navbar contact copies its visible address and reports failure', async () =
   const home = readFileSync(join(dist, 'index.html'), 'utf8');
   assert.match(home, /<button[^>]*data-copy-email[^>]*>contact@rayan\.world<\/button>/);
   assert.doesNotMatch(home, /class="nav-contact" href="mailto:/);
-  const script = home.match(/<script type="module">([\s\S]*?data-copy-email[\s\S]*?)<\/script>/)[1];
+  const script = [...home.matchAll(/<script type="module">([\s\S]*?)<\/script>/g)].map((match) => match[1]).find((body) => body.includes('data-copy-email'));
   const status = { textContent: '' };
   const button = { textContent: 'contact@rayan.world', dataset: {}, addEventListener(_, handler) { this.click = handler; } };
   let copied;
@@ -147,11 +147,45 @@ test('navbar contact copies its visible address and reports failure', async () =
   assert.match(status.textContent, /Copie impossible/);
 });
 
+test('both home heroes slide one keyword at a time after the initial pause', async () => {
+  assert.match(readFileSync(join(root, 'src/styles/global.css'), 'utf8'), /\.hero-word-stack\s*\{\s*display:\s*block;/);
+  for (const [route, second, third] of [['index.html', 'Données,', 'Déploiement'], ['en/index.html', 'Data,', 'Deployment']]) {
+    const home = readFileSync(join(dist, route), 'utf8');
+    const script = [...home.matchAll(/<script type="module">([\s\S]*?)<\/script>/g)].map((match) => match[1]).find((body) => body.includes('data-hero-words'));
+    const words = ['Applications,', second, third].map((text) => ({ firstElementChild: { textContent: text }, append(child) { this.firstElementChild = child; }, replaceChildren(child) { this.firstElementChild = child; } }));
+    let start, tick;
+    const document = {
+      hidden: false,
+      querySelectorAll: () => words,
+      createElement: () => ({ append(...children) { this.children = children; }, animate: (frames, options) => { assert.equal(frames[1].transform, 'translateY(-50%)'); assert.equal(options.duration, 1400); return { finished: Promise.resolve() }; } }),
+    };
+    const visible = () => words.map((word) => word.firstElementChild.textContent);
+    runInNewContext(script, { document, matchMedia: () => ({ matches: false }), setTimeout: (fn, delay) => { assert.equal(delay, 3200); start = fn; }, setInterval: (fn, delay) => { assert.equal(delay, 2400); tick = fn; } });
+    assert.deepEqual(visible(), ['Applications,', second, third]);
+    start();
+    await Promise.resolve();
+    assert.deepEqual(visible(), ['Applications,', 'ETL,', third]);
+    tick();
+    await Promise.resolve();
+    assert.deepEqual(visible(), ['Applications,', 'ETL,', 'CI/CD']);
+    tick();
+    await Promise.resolve();
+    assert.deepEqual(visible(), ['API,', 'ETL,', 'CI/CD']);
+    tick();
+    await Promise.resolve();
+    assert.deepEqual(visible(), ['API,', 'ETL,', 'Docker']);
+    tick();
+    await Promise.resolve();
+    assert.deepEqual(visible(), ['API,', 'SQL,', 'Docker']);
+    runInNewContext(script, { document, matchMedia: () => ({ matches: true }), setTimeout: () => assert.fail('reduced motion must not start the animation') });
+  }
+});
+
 test('English pages and browser language selection keep equivalent routes', () => {
   const home = readFileSync(join(dist, 'index.html'), 'utf8');
   const english = readFileSync(join(dist, 'en/index.html'), 'utf8');
   assert.match(english, /<html lang="en">/);
-  assert.match(english, /Applications, data, deployment/);
+  assert.match(english, /Applications, Data, Deployment/);
   assert.match(english, /href="\/en\/projets\/"/);
   assert.match(english, /hreflang="fr"/);
   assert.match(home, /hreflang="en"/);

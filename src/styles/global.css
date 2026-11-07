@@ -232,6 +232,9 @@ html[lang="en"] .site-header nav .nav-contact[data-copy-state="failed"]::after {
 .hero-inner { padding-top: clamp(3rem, 5vw, 5rem); }
 .hero .eyebrow { margin-bottom: 1.2rem; }
 .hero h1 { max-width: 15ch; margin-bottom: 2rem; font-size: clamp(2.8rem, 6vw, 5.8rem); line-height: 1.03; }
+.hero-word { display: block; height: 1.03em; overflow: hidden; white-space: nowrap; }
+.hero-word-stack { display: block; }
+.hero-word-stack > span { display: block; height: 1.03em; }
 .hero-base { align-items: center; padding-bottom: clamp(2rem, 3vw, 3rem); gap: 2rem; }
 .hero-base p { max-width: 42rem; }
 .hero-trace span { padding-block: .8rem; }
